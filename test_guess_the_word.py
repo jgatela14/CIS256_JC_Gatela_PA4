@@ -2,7 +2,9 @@
 # CIS256 Fall 2026
 # Programming Assignment 4
 
-from guess_the_word import WORDS, select_word, process_guess
+from guess_the_word import (
+    WORDS, select_word, process_guess, display_word
+)
 
 
 # Test that the selected word comes from our word list
@@ -29,3 +31,32 @@ def test_incorrect_guess():
 
     assert result == "incorrect"
     assert "z" in guessed_letters
+
+
+# Test that repeated letters are revealed together
+def test_repeated_letters():
+    guessed_letters = []
+
+    result = process_guess("apple", "p", guessed_letters)
+
+    assert result == "correct"
+    assert display_word("apple", guessed_letters) == "_ p p _ _"
+
+
+# Test that guessing the same letter twice is recognized
+def test_duplicate_guess():
+    guessed_letters = ["a"]
+
+    result = process_guess("apple", "a", guessed_letters)
+
+    assert result == "already guessed"
+    assert guessed_letters == ["a"]
+
+
+# Test that unguessed letters remain hidden
+def test_display_word():
+    guessed_letters = ["a"]
+
+    result = display_word("banana", guessed_letters)
+
+    assert result == "_ a _ a _ a"
